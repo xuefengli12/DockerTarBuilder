@@ -30,6 +30,14 @@ jobs:
           remove-haskell: 'true'
           remove-codeql: 'true'
           remove-docker-images: 'true'
+    - name: Move Docker to Large Partition
+      run: |
+        sudo systemctl stop docker.service docker.socket
+        mkdir -p $(pwd)/docker-storage
+        sudo mv /var/lib/docker/* $(pwd)/docker-storage/ || true
+        sudo rm -rf /var/lib/docker
+        sudo ln -s $(pwd)/docker-storage /var/lib/docker
+        sudo systemctl start docker.service
 
     - name: Pull Docker Images and Package
       run: |
