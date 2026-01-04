@@ -61,3 +61,35 @@ jobs:
     - name: Clean up intermediate files
       run: |
         rm *-amd64.tar
+    - name: Cache BaiduPCS-Go
+      id: cache-baidupcs
+      uses: actions/cache@v3
+      with:
+        path: /usr/local/bin/BaiduPCS-Go
+        key: ${{ runner.os }}-baidupcs-v3.9.5
+
+    - name: set BaiduPCS
+      if: steps.cache-baidupcs.outputs.cache-hit != 'true'
+      run: |
+        # 使用加速镜像站下载
+        MIRROR="https://ghproxy.com/"
+        URL="https://github.com/qjfoidnh/BaiduPCS-Go/releases/download/v3.9.5/BaiduPCS-Go-v3.9.5-linux-amd64.zip"
+        wget -O BaiduPCS.zip ${MIRROR}${URL}
+        
+        unzip BaiduPCS.zip
+        # 定位并移动二进制文件，同时赋予执行权限
+        find . -name "BaiduPCS-Go" -exec sudo mv {} /usr/local/bin/BaiduPCS-Go \;
+        sudo chmod +x /usr/local/bin/BaiduPCS-Go
+        rm -rf BaiduPCS.zip BaiduPCS-Go-* # 清理安装包
+
+    - name: login BaiduPCS
+      run: |
+        # 建议继续使用 BDUSS 方式，这是最稳定的
+        # 如果你想改用账号密码，命令为: BaiduPCS-Go login -username=111111 -password=2222222
+        BaiduPCS-Go login -bduss=${{ secrets.tuUmhPa3ZLOE8wTENYb1RNU0RvMWpXaGROY0FxTktOeWRXUS1OakZ2YmJtNEZwSVFBQUFBJCQAAAAAAAAAAAEAAABctSB9wObA9cDu19MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANsOWmnbDlppRW }} -stoken=${{ secrets.4ae51bf43d5e7fb0a40d643505a8ae3b30f00cbeb3adddd0caa520976f26b410 }}
+        BaiduPCS-Go tree /
+
+    - name: upload baidupcs
+      run: |
+        # 批量上传，并在完成后校验
+        BaiduPCS-Go upload *.xz /docker/amd64
