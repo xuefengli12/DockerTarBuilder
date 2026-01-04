@@ -86,7 +86,7 @@ jobs:
       run: |
         # 建议继续使用 BDUSS 方式，这是最稳定的
         # 如果你想改用账号密码，命令为: BaiduPCS-Go login -username=111111 -password=2222222
-        BaiduPCS-Go login -bduss=${{ secrets.tuUmhPa3ZLOE8wTENYb1RNU0RvMWpXaGROY0FxTktOeWRXUS1OakZ2YmJtNEZwSVFBQUFBJCQAAAAAAAAAAAEAAABctSB9wObA9cDu19MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANsOWmnbDlppRW }} -stoken=${{ secrets.4ae51bf43d5e7fb0a40d643505a8ae3b30f00cbeb3adddd0caa520976f26b410 }}
+        BaiduPCS-Go login -bduss=${{ secrets.NEW_BDUSS }} -stoken=${{ secrets.NEW_STOKEN }}
         BaiduPCS-Go tree /
 
     - name: upload baidupcs
