@@ -72,10 +72,9 @@ jobs:
       if: steps.cache-baidupcs.outputs.cache-hit != 'true'
       run: |
         # 使用加速镜像站下载
-        MIRROR="https://ghproxy.com/"
         URL="https://github.com/qjfoidnh/BaiduPCS-Go/releases/download/v3.9.5/BaiduPCS-Go-v3.9.5-linux-amd64.zip"
         wget -O BaiduPCS.zip ${MIRROR}${URL}
-        
+        file BaiduPCS.zip
         unzip BaiduPCS.zip
         # 定位并移动二进制文件，同时赋予执行权限
         find . -name "BaiduPCS-Go" -exec sudo mv {} /usr/local/bin/BaiduPCS-Go \;
@@ -92,4 +91,4 @@ jobs:
     - name: upload baidupcs
       run: |
         # 批量上传，并在完成后校验
-        BaiduPCS-Go upload *.xz /docker/amd64
+        BaiduPCS-Go upload *.tar.gz /docker/amd64
