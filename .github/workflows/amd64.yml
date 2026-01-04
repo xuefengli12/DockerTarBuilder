@@ -90,5 +90,13 @@ jobs:
 
     - name: upload baidupcs
       run: |
-        # 批量上传，并在完成后校验
-        BaiduPCS-Go upload *.tar.gz /docker/amd64
+        # 1. 查看当前登录的是哪个账号（确认账号没登错）
+        BaiduPCS-Go loglist
+        
+        # 2. 列出目标目录的内容，看看服务器到底认为什么文件存在
+        echo "正在列出 /docker/amd64 目录下的内容："
+        BaiduPCS-Go ls /docker/amd64 || echo "目录不存在或为空"
+        
+        # 3. 强制删除（不管它在不在，先扫清障碍）
+        BaiduPCS-Go rm /docker/amd64/x86-64-images.tar.gz || true
+        BaiduPCS-Go upload x86-64-images.tar.gz /docker/amd64
