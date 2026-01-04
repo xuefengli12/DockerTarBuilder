@@ -77,7 +77,7 @@ jobs:
         file BaiduPCS.zip
         unzip BaiduPCS.zip
         # 定位并移动二进制文件，同时赋予执行权限
-        find . -name "BaiduPCS-Go" -exec sudo mv {} /usr/local/bin/BaiduPCS-Go \;
+        find ./BaiduPCS-Go-v3.9.5-linux-amd64 -name "BaiduPCS-Go" -exec sudo mv {} /usr/local/bin/BaiduPCS-Go \;
         sudo chmod +x /usr/local/bin/BaiduPCS-Go
         rm -rf BaiduPCS.zip BaiduPCS-Go-* # 清理安装包
 
